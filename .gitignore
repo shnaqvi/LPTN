@@ -1,6 +1,8 @@
-# for Jupytext ignoring ipynb files
+# ignore ipynb files
 *.ipynb
+# ignore large directories
 __pycache__/
 datasets/
 experiments/
 .idea/
+basicsr/

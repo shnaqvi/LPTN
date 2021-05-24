@@ -37,6 +37,8 @@ cd LPTN
 pip install -r requirements.txt
 ```
 
+- Download basicsr directory to home from this really helpful [BasicSR](https://github.com/xinntao/BasicSR) project.
+
 - Download dataset (FiveK in 480p) and create lmdb (to accelerate training).
 ```bash
 PYTHONPATH="./:${PYTHONPATH}" python scripts/data_preparation/download_datasets.py
