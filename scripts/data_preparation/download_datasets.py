@@ -2,6 +2,8 @@ import argparse
 import glob
 import os
 from os import path as osp
+import sys
+sys.path.append(os.path.join(os.getcwd()))
 
 from codes.utils.download_util import download_file_from_google_drive
 

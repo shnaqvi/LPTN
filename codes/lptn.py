@@ -1,3 +1,26 @@
+# ---
+# jupyter:
+#   jupytext:
+#     formats: ipynb,py
+#     text_representation:
+#       extension: .py
+#       format_name: light
+#       format_version: '1.5'
+#       jupytext_version: 1.11.2
+#   kernelspec:
+#     display_name: Python 3
+#     name: python3
+# ---
+
+# + id="yt4rRRtlfyKL" executionInfo={"status": "ok", "timestamp": 1621736139121, "user_tz": 240, "elapsed": 351, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}}
+import sys, os
+root = '/content/drive/MyDrive/Colab Notebooks/LPTN'
+sys.path.append(root)
+
+# %reload_ext autoreload
+# %autoreload 2
+
+# + id="g-tMtDLZRfJA" executionInfo={"status": "ok", "timestamp": 1621738578867, "user_tz": 240, "elapsed": 473, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}}
 import argparse
 import datetime
 import logging
@@ -19,17 +42,20 @@ from codes.utils import (MessageLogger, check_resume,
 from codes.utils.dist_util import get_dist_info, init_dist
 from codes.utils.options import dict2str, parse
 
+
+# + id="dA4zR3xjYcFH" executionInfo={"status": "ok", "timestamp": 1621738581353, "user_tz": 240, "elapsed": 548, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}}
 def parse_options(is_train=True):
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '-opt', type=str, default='/home/liangjie/1code/LPTN_refined/options/train/LPTN/train_FiveK.yml', help='Path to option YAML file.')
+        '-opt', type=str, default=os.path.join(root, 'options/train/LPTN/train_FiveK_cs221.yml'), 
+                          help='Path to option YAML file.')
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm'],
         default='none',
         help='job launcher')
     parser.add_argument('--local_rank', type=int, default=0)
-    args = parser.parse_args()
+    args = parser.parse_args("")
     opt = parse(args.opt, is_train=is_train)
 
     # distributed settings
@@ -54,6 +80,7 @@ def parse_options(is_train=True):
 
     return opt
 
+
 def init_loggers(opt):
     log_file = osp.join(opt['path']['log'],
                         f"train_{opt['name']}_{get_time_str()}.log")
@@ -73,6 +100,7 @@ def init_loggers(opt):
     if opt['logger'].get('use_tb_logger') and 'debug' not in opt['name']:
         tb_logger = init_tb_logger(log_dir=osp.join('tb_logger', opt['name']))
     return logger, tb_logger
+
 
 def create_train_val_dataloader(opt, logger):
     # create train and val dataloaders
@@ -123,66 +151,68 @@ def create_train_val_dataloader(opt, logger):
     return train_loader, train_sampler, val_loader, total_epochs, total_iters
 
 
-def main():
-    # parse options, set distributed setting, set ramdom seed
-    opt = parse_options(is_train=True)
+# + colab={"base_uri": "https://localhost:8080/"} id="0r6MHfBnZ_PX" executionInfo={"status": "ok", "timestamp": 1621739599355, "user_tz": 240, "elapsed": 1071, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}} outputId="d641bbcd-2db5-4f05-c23a-cd7957d45bcc"
+# parse options, set distributed setting, set ramdom seed
+opt = parse_options()
 
-    torch.backends.cudnn.benchmark = True
-    # torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = True
+# torch.backends.cudnn.deterministic = True
 
-    # load resume states if necessary
-    if opt['path'].get('resume_state'):
-        device_id = torch.cuda.current_device()
-        resume_state = torch.load(
-            opt['path']['resume_state'],
-            map_location=lambda storage, loc: storage.cuda(device_id))
-    else:
-        resume_state = None
+# load resume states if necessary
+if opt['path'].get('resume_state'):
+    device_id = torch.cuda.current_device()
+    resume_state = torch.load(
+        opt['path']['resume_state'],
+        map_location=lambda storage, loc: storage.cuda(device_id))
+else:
+    resume_state = None
 
-    # mkdir for experiments and logger
-    if resume_state is None:
-        make_exp_dirs(opt)
-        if opt['logger'].get('use_tb_logger') and 'debug' not in opt[
-                'name'] and opt['rank'] == 0:
-            mkdir_and_rename(osp.join('tb_logger', opt['name']))
+# # mkdir for experiments and logger
+if resume_state is None:
+    make_exp_dirs(opt)
+    if opt['logger'].get('use_tb_logger') and 'debug' not in opt[
+            'name'] and opt['rank'] == 0:
+        mkdir_and_rename(osp.join('tb_logger', opt['name']))
 
-    # initialize loggers
-    logger, tb_logger = init_loggers(opt)
+# initialize loggers
+logger, tb_logger = init_loggers(opt)
 
-    # create train and validation dataloaders
-    result = create_train_val_dataloader(opt, logger)
-    train_loader, train_sampler, val_loader, total_epochs, total_iters = result
+# + colab={"base_uri": "https://localhost:8080/"} id="5MRXeCW8fFP5" executionInfo={"status": "ok", "timestamp": 1621739610812, "user_tz": 240, "elapsed": 3227, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}} outputId="94991d60-3424-47c3-be52-d518ec72fe25"
+# create train and validation dataloaders
+result = create_train_val_dataloader(opt, logger)
+train_loader, train_sampler, val_loader, total_epochs, total_iters = result
 
-    # create model
-    if resume_state:  # resume training
-        check_resume(opt, resume_state['iter'])
-        model = create_model(opt)
-        model.resume_training(resume_state)  # handle optimizers and schedulers
-        logger.info(f"Resuming training from epoch: {resume_state['epoch']}, "
-                    f"iter: {resume_state['iter']}.")
-        start_epoch = resume_state['epoch']
-        current_iter = resume_state['iter']
-    else:
-        model = create_model(opt)
-        start_epoch = 0
-        current_iter = 0
+# create model
+if resume_state:  # resume training
+    check_resume(opt, resume_state['iter'])
+    model = create_model(opt)
+    model.resume_training(resume_state)  # handle optimizers and schedulers
+    logger.info(f"Resuming training from epoch: {resume_state['epoch']}, "
+                f"iter: {resume_state['iter']}.")
+    start_epoch = resume_state['epoch']
+    current_iter = resume_state['iter']
+else:
+    model = create_model(opt)
+    start_epoch = 0
+    current_iter = 0
 
-    # create message logger (formatted outputs)
-    msg_logger = MessageLogger(opt, current_iter, tb_logger)
+# create message logger (formatted outputs)
+msg_logger = MessageLogger(opt, current_iter, tb_logger)
 
-    # dataloader prefetcher
-    prefetch_mode = opt['datasets']['train'].get('prefetch_mode')
-    if prefetch_mode is None or prefetch_mode == 'cpu':
-        prefetcher = CPUPrefetcher(train_loader)
-    elif prefetch_mode == 'cuda':
-        prefetcher = CUDAPrefetcher(train_loader, opt)
-        logger.info(f'Use {prefetch_mode} prefetch dataloader')
-        if opt['datasets']['train'].get('pin_memory') is not True:
-            raise ValueError('Please set pin_memory=True for CUDAPrefetcher.')
-    else:
-        raise ValueError(f'Wrong prefetch_mode {prefetch_mode}.'
-                         "Supported ones are: None, 'cuda', 'cpu'.")
+# dataloader prefetcher
+prefetch_mode = opt['datasets']['train'].get('prefetch_mode')
+if prefetch_mode is None or prefetch_mode == 'cpu':
+    prefetcher = CPUPrefetcher(train_loader)
+elif prefetch_mode == 'cuda':
+    prefetcher = CUDAPrefetcher(train_loader, opt)
+    logger.info(f'Use {prefetch_mode} prefetch dataloader')
+    if opt['datasets']['train'].get('pin_memory') is not True:
+        raise ValueError('Please set pin_memory=True for CUDAPrefetcher.')
+else:
+    raise ValueError(f'Wrong prefetch_mode {prefetch_mode}.'
+                      "Supported ones are: None, 'cuda', 'cpu'.")
 
+# + colab={"base_uri": "https://localhost:8080/"} id="fFYzB9GVenJv" executionInfo={"status": "ok", "timestamp": 1621739889958, "user_tz": 240, "elapsed": 273645, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}} outputId="349fe970-9287-4429-c64b-d76ea1e02d1a"
     # training
     logger.info(
         f'Start training from epoch: {start_epoch}, iter: {current_iter}')
@@ -243,7 +273,3 @@ def main():
                          opt['val']['save_img'])
     if tb_logger:
         tb_logger.close()
-
-
-if __name__ == '__main__':
-    main()

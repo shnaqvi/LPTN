@@ -1,0 +1,6 @@
+# for Jupytext ignoring ipynb files
+*.ipynb
+__pycache__/
+datasets/
+experiments/
+.idea/

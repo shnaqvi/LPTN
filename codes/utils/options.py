@@ -44,18 +44,6 @@ def parse(opt_path, is_train=True):
 
     opt['is_train'] = is_train
 
-    # datasets
-    for phase, dataset in opt['datasets'].items():
-        # for several datasets, e.g., test_1, test_2
-        phase = phase.split('_')[0]
-        dataset['phase'] = phase
-        if 'scale' in opt:
-            dataset['scale'] = opt['scale']
-        if dataset.get('dataroot_gt') is not None:
-            dataset['dataroot_gt'] = osp.expanduser(dataset['dataroot_gt'])
-        if dataset.get('dataroot_lq') is not None:
-            dataset['dataroot_lq'] = osp.expanduser(dataset['dataroot_lq'])
-
     # paths
     for key, val in opt['path'].items():
         if (val is not None) and ('resume_state' in key
@@ -86,6 +74,18 @@ def parse(opt_path, is_train=True):
         opt['path']['results_root'] = results_root
         opt['path']['log'] = results_root
         opt['path']['visualization'] = osp.join(results_root, 'visualization')
+
+    # datasets
+    for phase, dataset in opt['datasets'].items():
+        # for several datasets, e.g., test_1, test_2
+        phase = phase.split('_')[0]
+        dataset['phase'] = phase
+        if 'scale' in opt:
+            dataset['scale'] = opt['scale']
+        if dataset.get('dataroot_gt') is not None:
+            dataset['dataroot_gt'] = osp.join(opt['path']['root'], dataset['dataroot_gt'])
+        if dataset.get('dataroot_lq') is not None:
+            dataset['dataroot_lq'] = osp.join(opt['path']['root'], dataset['dataroot_lq'])
 
     return opt
 

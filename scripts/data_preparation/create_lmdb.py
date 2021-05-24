@@ -1,3 +1,5 @@
+import os, sys
+sys.path.append(os.path.join(os.getcwd()))
 from codes.utils import scandir
 from codes.utils.lmdb_util import make_lmdb_from_imgs
 
