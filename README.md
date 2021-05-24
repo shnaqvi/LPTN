@@ -37,12 +37,21 @@ cd LPTN
 pip install -r requirements.txt
 ```
 
-- Download basicsr directory to home from this really helpful [BasicSR](https://github.com/xinntao/BasicSR) project.
+- Download basicsr directory to the home folder from this really helpful [BasicSR](https://github.com/xinntao/BasicSR) project.
 
 - Download dataset (FiveK in 480p) and create lmdb (to accelerate training).
 ```bash
 PYTHONPATH="./:${PYTHONPATH}" python scripts/data_preparation/download_datasets.py
 PYTHONPATH="./:${PYTHONPATH}" python scripts/data_preparation/create_lmdb.py
+```
+
+- For developing with Colab/Jupyter Notebook, generate lptn.ipynb using jupytext
+```bash
+jupytext --to ipynb codes/lptn.py
+```
+- To commit the changes made to Jupyter notebook, convert to Python script
+```bash
+jupytext --set-formats ipynb,py --sync lptn.ipynb 
 ```
 
 #### Training

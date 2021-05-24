@@ -12,7 +12,7 @@
 #     name: python3
 # ---
 
-# + id="yt4rRRtlfyKL" executionInfo={"status": "ok", "timestamp": 1621736139121, "user_tz": 240, "elapsed": 351, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}}
+# + id="yt4rRRtlfyKL"
 import sys, os
 root = '/content/drive/MyDrive/Colab Notebooks/LPTN'
 sys.path.append(root)
@@ -20,7 +20,7 @@ sys.path.append(root)
 # %reload_ext autoreload
 # %autoreload 2
 
-# + id="g-tMtDLZRfJA" executionInfo={"status": "ok", "timestamp": 1621738578867, "user_tz": 240, "elapsed": 473, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}}
+# + id="g-tMtDLZRfJA"
 import argparse
 import datetime
 import logging
@@ -43,7 +43,7 @@ from codes.utils.dist_util import get_dist_info, init_dist
 from codes.utils.options import dict2str, parse
 
 
-# + id="dA4zR3xjYcFH" executionInfo={"status": "ok", "timestamp": 1621738581353, "user_tz": 240, "elapsed": 548, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}}
+# + id="dA4zR3xjYcFH"
 def parse_options(is_train=True):
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -151,7 +151,7 @@ def create_train_val_dataloader(opt, logger):
     return train_loader, train_sampler, val_loader, total_epochs, total_iters
 
 
-# + colab={"base_uri": "https://localhost:8080/"} id="0r6MHfBnZ_PX" executionInfo={"status": "ok", "timestamp": 1621739599355, "user_tz": 240, "elapsed": 1071, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}} outputId="d641bbcd-2db5-4f05-c23a-cd7957d45bcc"
+# + colab={"base_uri": "https://localhost:8080/"} id="0r6MHfBnZ_PX" executionInfo={"elapsed": 1071, "status": "ok", "timestamp": 1621739599355, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}, "user_tz": 240} outputId="d641bbcd-2db5-4f05-c23a-cd7957d45bcc"
 # parse options, set distributed setting, set ramdom seed
 opt = parse_options()
 
@@ -177,7 +177,7 @@ if resume_state is None:
 # initialize loggers
 logger, tb_logger = init_loggers(opt)
 
-# + colab={"base_uri": "https://localhost:8080/"} id="5MRXeCW8fFP5" executionInfo={"status": "ok", "timestamp": 1621739610812, "user_tz": 240, "elapsed": 3227, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}} outputId="94991d60-3424-47c3-be52-d518ec72fe25"
+# + colab={"base_uri": "https://localhost:8080/"} id="5MRXeCW8fFP5" executionInfo={"elapsed": 3227, "status": "ok", "timestamp": 1621739610812, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}, "user_tz": 240} outputId="94991d60-3424-47c3-be52-d518ec72fe25"
 # create train and validation dataloaders
 result = create_train_val_dataloader(opt, logger)
 train_loader, train_sampler, val_loader, total_epochs, total_iters = result
@@ -212,7 +212,7 @@ else:
     raise ValueError(f'Wrong prefetch_mode {prefetch_mode}.'
                       "Supported ones are: None, 'cuda', 'cpu'.")
 
-# + colab={"base_uri": "https://localhost:8080/"} id="fFYzB9GVenJv" executionInfo={"status": "ok", "timestamp": 1621739889958, "user_tz": 240, "elapsed": 273645, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}} outputId="349fe970-9287-4429-c64b-d76ea1e02d1a"
+# + colab={"base_uri": "https://localhost:8080/"} id="fFYzB9GVenJv" executionInfo={"elapsed": 273645, "status": "ok", "timestamp": 1621739889958, "user": {"displayName": "Salman Naqvi", "photoUrl": "https://lh3.googleusercontent.com/a-/AOh14GjPkTmqUm9YR_QQLazufqu2F8Nn0unp4gRPK6H6=s64", "userId": "05168687047986129733"}, "user_tz": 240} outputId="349fe970-9287-4429-c64b-d76ea1e02d1a"
     # training
     logger.info(
         f'Start training from epoch: {start_epoch}, iter: {current_iter}')
